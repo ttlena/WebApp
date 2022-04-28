@@ -2,8 +2,6 @@ package de.hsrm.mi.web.projekt.benutzerprofil;
 
 import java.time.LocalDate;
 
-import org.apache.tomcat.jni.Local;
-
 public class TestKlasse {
 
     public static void main(String[] args){

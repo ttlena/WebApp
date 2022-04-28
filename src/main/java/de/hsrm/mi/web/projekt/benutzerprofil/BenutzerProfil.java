@@ -84,9 +84,6 @@ public class BenutzerProfil {
         List<String> interessenListe = new ArrayList<>();
         if (!this.interessen.equals("")){
             interessenListe = Arrays.asList(this.interessen.split("\\s*,\\s*"));
-            for (String interesse: interessenListe){
-                interesse = interesse.trim();
-            }
         }
         return interessenListe;
     }
