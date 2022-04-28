@@ -6,12 +6,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BenutzerProfil {
-    String name;
-    LocalDate geburtsdatum;
-    String adresse;
-    String email;
-    String lieblingsfarbe;
-    String interessen;
+    private String name;
+    private LocalDate geburtsdatum;
+    private String adresse;
+    private String email;
+    private String lieblingsfarbe;
+    private String interessen;
 
     public BenutzerProfil(){
         this.name = "";
@@ -83,7 +83,10 @@ public class BenutzerProfil {
     public List<String> getInteressenListe(){
         List<String> interessenListe = new ArrayList<>();
         if (!this.interessen.equals("")){
-            interessenListe = Arrays.asList(this.interessen.split(" , "));
+            interessenListe = Arrays.asList(this.interessen.split("\\s*,\\s*"));
+            for (String interesse: interessenListe){
+                interesse = interesse.trim();
+            }
         }
         return interessenListe;
     }
@@ -119,6 +122,5 @@ public class BenutzerProfil {
             return false;
         return true;
     }
-    
     
 }
