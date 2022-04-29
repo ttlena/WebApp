@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:td="http://www.tdymeleaf.org">
+<html lang="en" xmlns:td="http://www.thymeleaf.org">
 <head>
     <title>Benutzerprofil</title>
 </head>
@@ -12,29 +12,32 @@
     <table modelAttribute="profil">
         <tr>
             <td>Name</td>
-            <td td:text="${name}"></td>
+            <td th:text="${name}"></td>
         </tr>
         <tr>
             <td>Geb.</td>
-            <td td:text="${geburtsdatum}"></td>
+            <td th:text="${geburtsdatum}"></td>
         </tr>
         <tr>
             <td>Adresse</td>
-            <td td:text="${adresse}"></td>
+            <td th:text="${adresse}"></td>
         </tr>
         <tr>
             <td>eMail</td>
-            <td td_text="${eMail}"></td>
+            <td th:text="${eMail}"></td>
         </tr>
         <tr>
             <td>Lieblingsfarbe</td>
-            <td td_text="${lieblingsfarbe}"></td>
+            <td th:text="${lieblingsfarbe}"></td>
         </tr>
     </table>
 
     <h3>Interessen</h3>
-    <ol th:each="ele,status:${interessenliste}">
-        <li th:text="${ele}"></li>
+    <ol>
+        <li th:each="ele,status : ${interessenliste}" th:text="${ele}"></li>
     </ol>
+
+    <a href="/benutzerprofil/bearbeiten">bearbeiten</a>
+
 </body>
 </html>

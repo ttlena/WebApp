@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:td="http://www.thymeleaf.org">
+
+<body>
+    <h1>Benutzerprofil bearbeiten</h1>
+    <h3>Ihre Daten</h3>
+    
+    <form method="POST" modelAttribute="profil">
+        <label for="name">Name:</label>
+        <input type="text" name="name" style="width: 80%;">
+        
+        <label for="geburtsdatum">Geburtsdatum:</label>
+        <input type="date" name="geburtsdatum">
+        
+        <label for="adresse">Adresse:</label>
+        <input type="text" name="adresse">
+        
+        <label for="eMail">eMail:</label>
+        <input type="text" name="eMail">
+        
+        <label for="lieblingsfarbe">Lieblingsfarbe</label>
+        <input type="color" name="lieblingsfarbe">
+        
+        <label for="interessen">Interessen (durch Komma getrennt)</label>
+        <input type="text" name="interessen">
+        
+        <input type="submit" value="speichern">
+        <input type="button" value="abbrechen">
+    </form>
+</body>
+
+</html>
