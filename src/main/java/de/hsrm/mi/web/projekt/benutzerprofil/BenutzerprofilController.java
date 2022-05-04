@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
@@ -22,12 +21,12 @@ public class BenutzerprofilController {
     @ModelAttribute
     public void initProfil(Model m){
         BenutzerProfil bp = new BenutzerProfil();
-        bp.setName("Peter");
-        bp.setGeburtsdatum(LocalDate.now());
-        bp.setEmail("ha@lo.lo");
-        bp.setAdresse("Goldgasse 10, 65185 Wiesbaden");
-        bp.setInteressen("schwimmen, lesen, schreiben");
-        bp.setLieblingsfarbe("#000000");
+        // bp.setName("Peter");
+        // bp.setGeburtsdatum(LocalDate.now());
+        // bp.setEmail("ha@lo.lo");
+        // bp.setAdresse("Goldgasse 10, 65185 Wiesbaden");
+        // bp.setInteressen("schwimmen, lesen, schreiben");
+        // bp.setLieblingsfarbe("#000000");
         m.addAttribute("profil", bp);
     }
 

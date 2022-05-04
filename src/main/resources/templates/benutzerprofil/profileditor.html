@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:td="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <body>
     <h1>Benutzerprofil bearbeiten</h1>
     <h3>Ihre Daten</h3>
     
-    <form th:method="POST" th:object="${profil}" th:action="@{/benutzerprofil}">
+    <form method="POST" th:object="${profil}" th:action="@{/benutzerprofil/bearbeiten}">
         <label for="name">Name:</label><br>
-        <input type="text" name="name" style="width: 80%;" th:field="*{name}"><br>
+        <input type="text" style="width: 80%;" th:field="*{name}"><br>
         
         <label for="geburtsdatum">Geburtsdatum:</label><br>
-        <input type="date" name="geburtsdatum" style="width: 80%;" th:value="${geburtsdatum}"><br>
+        <input type="date" style="width: 80%;" th:value="*{geburtsdatum}"><br>
         
         <label for="adresse">Adresse:</label><br>
-        <input type="text" name="adresse" style="width: 80%;" th:field="*{adresse}"><br>
+        <input type="text" style="width: 80%;" th:field="*{adresse}"><br>
         
         <label for="email">eMail:</label><br>
-        <input type="text" name="email" style="width: 80%;" th:value="*{email}"><br>
+        <input type="text" style="width: 80%;" th:field="*{email}"><br>
         
         <label for="lieblingsfarbe">Lieblingsfarbe</label><br>
-        <input type="color" name="lieblingsfarbe" style="width: 80%;" th:value="*{lieblingsfarbe}"><br>
+        <input type="color"style="width: 80%;" th:value="*{lieblingsfarbe}"><br>
         
         <label for="interessen">Interessen (durch Komma getrennt)</label><br>
-        <input type="text" name="interessen" style="width: 80%;" th:field="*{interessen}"><br><br>
+        <input type="text" style="width: 80%;" th:field="*{interessen}"><br><br>
         
         <input type="submit" value="speichern">
         <input type="button" value="abbrechen">
