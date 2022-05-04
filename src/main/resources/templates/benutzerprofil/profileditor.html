@@ -5,24 +5,24 @@
     <h1>Benutzerprofil bearbeiten</h1>
     <h3>Ihre Daten</h3>
     
-    <form method="POST" modelAttribute="profil">
-        <label for="name">Name:</label>
-        <input type="text" name="name" style="width: 80%;">
+    <form th:method="POST" th:object="${profil}" th:action="@{/benutzerprofil}">
+        <label for="name">Name:</label><br>
+        <input type="text" name="name" style="width: 80%;" th:field="*{name}"><br>
         
-        <label for="geburtsdatum">Geburtsdatum:</label>
-        <input type="date" name="geburtsdatum">
+        <label for="geburtsdatum">Geburtsdatum:</label><br>
+        <input type="date" name="geburtsdatum" style="width: 80%;" th:value="${geburtsdatum}"><br>
         
-        <label for="adresse">Adresse:</label>
-        <input type="text" name="adresse">
+        <label for="adresse">Adresse:</label><br>
+        <input type="text" name="adresse" style="width: 80%;" th:field="*{adresse}"><br>
         
-        <label for="eMail">eMail:</label>
-        <input type="text" name="eMail">
+        <label for="email">eMail:</label><br>
+        <input type="text" name="email" style="width: 80%;" th:value="*{email}"><br>
         
-        <label for="lieblingsfarbe">Lieblingsfarbe</label>
-        <input type="color" name="lieblingsfarbe">
+        <label for="lieblingsfarbe">Lieblingsfarbe</label><br>
+        <input type="color" name="lieblingsfarbe" style="width: 80%;" th:value="*{lieblingsfarbe}"><br>
         
-        <label for="interessen">Interessen (durch Komma getrennt)</label>
-        <input type="text" name="interessen">
+        <label for="interessen">Interessen (durch Komma getrennt)</label><br>
+        <input type="text" name="interessen" style="width: 80%;" th:field="*{interessen}"><br><br>
         
         <input type="submit" value="speichern">
         <input type="button" value="abbrechen">
