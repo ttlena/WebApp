@@ -5,7 +5,7 @@
     <h1>Benutzerprofil bearbeiten</h1>
     <h3>Ihre Daten</h3>
     
-    <form th:method="POST" th:object="${profil}" th:action="@{/benutzerprofil}">
+    <form th:method="POST" th:object="${profil}" th:action="@{/benutzerprofil/bearbeiten}">
         <label for="name">Name:</label><br>
         <input type="text" name="name" style="width: 80%;" th:field="*{name}"><br>
         
