@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class BenutzerprofilController {
     Logger logger = LoggerFactory.getLogger(BenutzerprofilController.class);
     
-    @ModelAttribute
+    @ModelAttribute("profil")
     public void initProfil(Model m){
         BenutzerProfil bp = new BenutzerProfil();
         bp.setName("Peter");
