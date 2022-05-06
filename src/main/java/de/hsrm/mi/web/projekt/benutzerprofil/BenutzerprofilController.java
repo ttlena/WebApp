@@ -22,12 +22,6 @@ public class BenutzerprofilController {
     @ModelAttribute("profil")
     public void initProfil(Model m){
         BenutzerProfil bp = new BenutzerProfil();
-        bp.setName("Peter");
-        bp.setGeburtsdatum(LocalDate.now());
-        bp.setEmail("ha@lo.lo");
-        bp.setAdresse("Goldgasse 10, 65185 Wiesbaden");
-        bp.setInteressen("schwimmen, lesen, schreiben");
-        bp.setLieblingsfarbe("#000000");
         m.addAttribute("profil", bp);
     }
 
