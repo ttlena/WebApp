@@ -1,31 +1,58 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:td="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .fehler {
+            border:2px solid;
+            border-color: red;
+        }
+        .fehlermeldung {
+            font-size: x-small;
+            color: red;
+        }
+    </style>
+</head>
 <body>
     <h1>Benutzerprofil bearbeiten</h1>
     <h3>Ihre Daten</h3>
     
     <form th:method="POST" th:object="${profil}" th:action="@{/benutzerprofil/bearbeiten}">
         <label for="name">Name:</label><br>
-        <input type="text" name="name" style="width: 80%;" th:field="*{name}"><br>
-        
+        <input type="text" name="name" style="width:100%;" th:field="*{name}" th:errorclass="fehler"><br>
+        <label class="fehlermeldung" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></label><br>
+        <br>
+
         <label for="geburtsdatum">Geburtsdatum:</label><br>
-        <input type="date" name="geburtsdatum" style="width: 80%;" th:value="${geburtsdatum}"><br>
-        
+        <input type="date" name="geburtsdatum" style="width:100%;" th:field="*{geburtsdatum}" th:errorclass="fehler"><br>
+        <label class="fehlermeldung" th:if="${#fields.hasErrors('geburtsdatum')}" th:errors="*{geburtsdatum}"></label><br>
+        <br>
+
         <label for="adresse">Adresse:</label><br>
-        <input type="text" name="adresse" style="width: 80%;" th:field="*{adresse}"><br>
-        
-        <label for="email">eMail:</label><br>
-        <input type="text" name="email" style="width: 80%;" th:value="*{email}"><br>
-        
+        <input type="text" name="adresse" style="width:100%;" th:field="*{adresse}" th:errorclass="fehler"><br>
+        <label class="fehlermeldung" th:if="${#fields.hasErrors('adresse')}" th:errors="*{adresse}"></label><br>
+        <br>
+
+        <label for="email">E-Mail:</label><br>
+        <input type="text" name="email" style="width:100%;" th:value="*{email}" th:errorclass="fehler"><br>
+        <label class="fehlermeldung" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></label><br>
+        <br>
+
         <label for="lieblingsfarbe">Lieblingsfarbe</label><br>
-        <input type="color" name="lieblingsfarbe" style="width: 80%;" th:value="*{lieblingsfarbe}"><br>
-        
+        <input type="color" name="lieblingsfarbe" style="width:100%;" th:value="*{lieblingsfarbe}" th:errorclass="fehler"><br>
+        <label class="fehlermeldung" th:if="${#fields.hasErrors('lieblingsfarbe')}" th:errors="*{lieblingsfarbe}"></label><br>
+        <br>
+
         <label for="interessen">Interessen (durch Komma getrennt)</label><br>
-        <input type="text" name="interessen" style="width: 80%;" th:field="*{interessen}"><br><br>
-        
+        <input type="text" name="interessen" style="width:100%;" th:field="*{interessen}" th:errorclass="fehler"><br><br>
+        <label class="fehlermeldung" th:if="${#fields.hasErrors('interessen')}" th:errors="*{interessen}"></label><br>
+        <br>
+
         <input type="submit" value="speichern">
-        <input type="button" value="abbrechen">
+        <!-- <input type="button" value="abbrechen"> -->
     </form>
 </body>
 

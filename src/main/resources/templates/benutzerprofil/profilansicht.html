@@ -35,7 +35,7 @@
         <li th:each="ele,status : ${profil.getInteressenListe()}" th:text="${ele}"></li>
     </ol>
 
-    <a href="/benutzerprofil/bearbeiten">bearbeiten</a>
+    <a th:href="@{benutzerprofil/bearbeiten}">bearbeiten</a>
 
 </body>
 </html>
