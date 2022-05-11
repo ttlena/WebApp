@@ -5,23 +5,44 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import de.hsrm.mi.web.projekt.validierung.Bunt;
+
 public class BenutzerProfil {
+    @Size(min=3,max=60, message="Größe muss zwischen 3 und 60 sein")
+    @NotNull(message = "Name darf nicht fehlen")
     private String name;
+
     @DateTimeFormat(iso = ISO.DATE)
+    @PastOrPresent
+    @NotNull(message = "Geburtsdatum darf nicht fehlen")
     private LocalDate geburtsdatum;
+
+    @NotNull(message = "Adresse darf nicht fehlen")
     private String adresse;
+
+    @Email(message = "muss eine korrekt formatierte E-Mail-Adresse sein")
     private String email;
+
+    @Bunt(message = "schlechte Farbe gewählt")
     private String lieblingsfarbe;
+
+    @NotNull(message = "fehlende Interessen?!")
     private String interessen;
 
     public BenutzerProfil(){
         this.name = "";
         this.geburtsdatum = LocalDate.of(1,1,1);
         this.adresse = "";
-        this.email = "";
+        this.email = null;
         this.lieblingsfarbe = "";
         this.interessen = "";
     }

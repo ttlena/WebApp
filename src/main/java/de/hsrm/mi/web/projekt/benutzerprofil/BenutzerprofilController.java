@@ -1,20 +1,27 @@
 package de.hsrm.mi.web.projekt.benutzerprofil;
 
 import java.time.LocalDate;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@RequestMapping("")
+// @Validated //Ueberpruefung aktivieren
+@RequestMapping("/")
 @SessionAttributes(names={"profil"})
 public class BenutzerprofilController {
     Logger logger = LoggerFactory.getLogger(BenutzerprofilController.class);
@@ -25,32 +32,25 @@ public class BenutzerprofilController {
         m.addAttribute("profil", bp);
     }
 
-    @GetMapping("/benutzerprofil")
+    @GetMapping("benutzerprofil")
     public String getProfilansicht(@ModelAttribute("profil") BenutzerProfil profil, Model m){
-
-        m.addAttribute("name", profil.getName());
-        m.addAttribute("geburtsdatum", profil.getGeburtsdatum());
-        m.addAttribute("adresse", profil.getAdresse());
-        m.addAttribute("email", profil.getEmail());
-        m.addAttribute("lieblingsfarbe", profil.getLieblingsfarbe());
-        m.addAttribute("interessenliste", profil.getInteressenListe());
-        
         return "benutzerprofil/profilansicht";
     }
 
-    @GetMapping("/benutzerprofil/bearbeiten")
+    @GetMapping("benutzerprofil/bearbeiten")
     public String getProfileditor(@ModelAttribute("profil") BenutzerProfil profil, Model m){
-        m.addAttribute("name", profil.getName());
-        m.addAttribute("geburtsdatum", profil.getGeburtsdatum());
-        m.addAttribute("adresse", profil.getAdresse());
-        m.addAttribute("email", profil.getEmail());
-        m.addAttribute("lieblingsfarbe", profil.getLieblingsfarbe());
-        m.addAttribute("interessenliste", profil.getInteressen());
         return "benutzerprofil/profileditor";
     }
 
-    @PostMapping("/benutzerprofil/bearbeiten")
-    public String postProfil(@ModelAttribute("profil") BenutzerProfil profil, Model m){
+    @PostMapping("benutzerprofil/bearbeiten")
+    public String postProfil(
+                @Valid @ModelAttribute("profil") BenutzerProfil profil,
+                BindingResult result, 
+                Model m){
+
+        if (result.hasErrors()){
+            return "benutzerprofil/profileditor";
+        }
         
         return "redirect:/benutzerprofil";
     }
