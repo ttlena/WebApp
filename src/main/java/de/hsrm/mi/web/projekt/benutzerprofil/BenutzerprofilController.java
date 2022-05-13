@@ -29,15 +29,20 @@ public class BenutzerprofilController {
     }
 
     @GetMapping("benutzerprofil")
-    public String getProfilansicht(@ModelAttribute("profil") BenutzerProfil profil, Model m){
+    public String getProfilansicht(
+                @ModelAttribute("profil") BenutzerProfil profil, 
+                Model m,
+                Locale locale){
+        m.addAttribute("sprache", locale.getDisplayLanguage());
         return "benutzerprofil/profilansicht";
     }
 
     @GetMapping("benutzerprofil/bearbeiten")
     public String getProfileditor(
-        @ModelAttribute("profil") BenutzerProfil profil, 
-        Model m, 
-        Locale locale){
+                @ModelAttribute("profil") BenutzerProfil profil, 
+                Model m, 
+                Locale locale){
+        m.addAttribute("sprache", locale);
         return "benutzerprofil/profileditor";
     }
 
