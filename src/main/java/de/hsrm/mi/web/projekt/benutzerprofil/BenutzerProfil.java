@@ -17,25 +17,25 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import de.hsrm.mi.web.projekt.validierung.Bunt;
 
 public class BenutzerProfil {
-    @Size(min=3,max=60, message="Größe muss zwischen 3 und 60 sein")
+    @Size(min=3,max=60, message="{name.fehler}")
     @NotNull(message = "Name darf nicht fehlen")
     private String name;
 
     @DateTimeFormat(iso = ISO.DATE)
     @PastOrPresent
-    @NotNull(message = "Geburtsdatum darf nicht fehlen")
+    @NotNull
     private LocalDate geburtsdatum;
 
-    @NotNull(message = "Adresse darf nicht fehlen")
+    @NotNull
     private String adresse;
 
-    @Email(message = "muss eine korrekt formatierte E-Mail-Adresse sein")
+    @Email(message = "{email.fehler}")
     private String email;
 
-    @Bunt(message = "schlechte Farbe gewählt")
+    @Bunt(message = "{bunt.fehler}")
     private String lieblingsfarbe;
 
-    @NotNull(message = "fehlende Interessen?!")
+    @NotNull
     private String interessen;
 
     public BenutzerProfil(){
