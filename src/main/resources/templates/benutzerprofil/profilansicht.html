@@ -4,38 +4,40 @@
     <title>Benutzerprofil</title>
 </head>
 <body>
-    <h1>Benutzerprofil</h1>
-    <h3>Ihre Daten</h3>
+    <h1 th:text="#{profilansicht.titel}">Benutzerprofil</h1>
+    <a th:href="@{?sprache=de}">DE</a>
+    <a th:href="@{?sprache=en}">EN</a>
+    <h3 th:text="#{profil.ihredaten}">Ihre Daten</h3>
     
     <table>
         <tr>
-            <td>Name</td>
+            <td th:text="#{profil.name}">Name</td>
             <td th:text="${profil.name}"></td>
         </tr>
         <tr>
-            <td>Geb.</td>
+            <td th:text="#{profil.geburtsdatum}">Geb.</td>
             <td th:text="${profil.geburtsdatum}"></td>
         </tr>
         <tr>
-            <td>Adresse</td>
+            <td th:text="#{profil.adresse}">Adresse</td>
             <td th:text="${profil.adresse}"></td>
         </tr>
         <tr>
-            <td>eMail</td>
+            <td th:text="#{profil.email}">eMail</td>
             <td th:text="${profil.email}"></td>
         </tr>
         <tr>
-            <td>Lieblingsfarbe</td>
+            <td th:text="#{profil.lieblingsfarbe}">Lieblingsfarbe</td>
             <td th:text="${profil.lieblingsfarbe}"></td>
         </tr>
     </table>
 
-    <h3>Interessen</h3>
+    <h3 th:text="#{profil.interessen}">Interessen</h3>
     <ol>
         <li th:each="ele,status : ${profil.getInteressenListe()}" th:text="${ele}"></li>
     </ol>
 
-    <a th:href="@{benutzerprofil/bearbeiten}">bearbeiten</a>
+    <a th:href="@{benutzerprofil/bearbeiten}" th:text="#{profil.bearbeiten}">bearbeiten</a>
 
 </body>
 </html>
