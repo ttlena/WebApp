@@ -54,7 +54,7 @@
         <br>
 
         <input type="submit" th:value="#{profil.speichern}">
-        <input type="button" th:value="#{profil.abbrechen}">
+        <button onclick="window.location.href='/benutzerprofil'" type="reset" th:text = "#{profil.abbrechen}"></button>
     </form>
 </body>
 </html>
