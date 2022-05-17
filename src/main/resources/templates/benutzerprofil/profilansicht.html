@@ -5,6 +5,9 @@
 </head>
 <body>
     <h1 th:text="#{profilansicht.titel}">Benutzerprofil</h1>
+    <br>
+    <a th:href="@{benutzerprofil/clearsession}">clear Session</a>
+    <br>
     <a th:href="@{?sprache=de}">DE</a>
     <a th:href="@{?sprache=en}">EN</a>
     <h3 th:text="#{profil.ihredaten}">Ihre Daten</h3>
