@@ -1,43 +1,50 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+=======
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+>>>>>>> e071d7245a42e36c80b98d795122a86d769e62c4
 <head>
     <title>Benutzerprofil</title>
 </head>
 <body>
-    <h1>Benutzerprofil</h1>
-    <h3>Ihre Daten</h3>
-    <label >
-
-    </label>
-    <table modelAttribute="profil">
+    <h1 th:text="#{profilansicht.titel}">Benutzerprofil</h1>
+    <br>
+    <a th:href="@{benutzerprofil/clearsession}">clear Session</a>
+    <br>
+    <a th:href="@{?sprache=de}">DE</a>
+    <a th:href="@{?sprache=en}">EN</a>
+    <h3 th:text="#{profil.ihredaten}">Ihre Daten</h3>
+    
+    <table>
         <tr>
-            <td>Name</td>
-            <td th:text="${name}"></td>
+            <td th:text="#{profil.name}">Name</td>
+            <td th:text="${profil.name}"></td>
         </tr>
         <tr>
-            <td>Geb.</td>
-            <td th:text="${geburtsdatum}"></td>
+            <td th:text="#{profil.geburtsdatum}">Geb.</td>
+            <td th:text="${profil.geburtsdatum}"></td>
         </tr>
         <tr>
-            <td>Adresse</td>
-            <td th:text="${adresse}"></td>
+            <td th:text="#{profil.adresse}">Adresse</td>
+            <td th:text="${profil.adresse}"></td>
         </tr>
         <tr>
-            <td>eMail</td>
-            <td th:text="${email}"></td>
+            <td th:text="#{profil.email}">eMail</td>
+            <td th:text="${profil.email}"></td>
         </tr>
         <tr>
-            <td>Lieblingsfarbe</td>
-            <td th:text="${lieblingsfarbe}"></td>
+            <td th:text="#{profil.lieblingsfarbe}">Lieblingsfarbe</td>
+            <td th:text="${profil.lieblingsfarbe}"></td>
         </tr>
     </table>
 
-    <h3>Interessen</h3>
+    <h3 th:text="#{profil.interessen}">Interessen</h3>
     <ol>
-        <li th:each="ele,status : ${interessenliste}" th:text="${ele}"></li>
+        <li th:each="ele,status : ${profil.getInteressenListe()}" th:text="${ele}"></li>
     </ol>
 
-    <a href="/benutzerprofil/bearbeiten">bearbeiten</a>
+    <a th:href="@{benutzerprofil/bearbeiten}" th:text="#{profil.bearbeiten}">bearbeiten</a>
 
 </body>
 </html>

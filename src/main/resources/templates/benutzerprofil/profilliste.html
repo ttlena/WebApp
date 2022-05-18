@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th {
+            text-align: left;
+        }
+        tr {
+            border-bottom: 1px solid #ddd;
+        }
+        .titel {
+            background-color: #487d75;
+            padding: 20px 30px;
+            color: white
+        }
+        .inhalt {
+            padding: 0px 30px;
+        }
+        .button {
+        border: none;
+        border-radius: 3px;
+        color: white;
+        padding: 5px 10px;
+        text-align: center;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px 2px;
+        cursor: pointer;
+        background-color: red;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div class="titel">
+        <h1 th:text="#{profilliste.titel}">Benutzerprofil-Liste</h1>
+        <a th:href="@{?sprache=de}">DE</a>
+        <a th:href="@{?sprache=en}">EN</a>
+    </div>
+    <br><br><br>
+    <div class="inhalt">
+        <table>
+        <tr>
+            <th th:text="#{profilliste.tab.name}">Name</th>
+            <th th:text="#{profilliste.tab.geburtsdatum}">Geb.</th>
+            <th th:text="#{profilliste.tab.email}">EPost</th>
+            <th th:text="#{profilliste.tab.adresse}">aus</th>
+            <th th:text="#{profilliste.tab.loeschen}">l&ouml;schen</th>
+        </tr>
+        <tr th:each="ele,status : ${profilliste}">
+            <td>
+                <a th:text="${ele.getName()}" th:href="@{liste(op=bearbeiten, id=${ele.getId()})}">Person x</a>
+            </td>
+            <td th:text="${ele.getGeburtsdatum()}">0001-01-01</td>
+            <td th:text="${ele.getEmail()}"></td>
+            <td th:text="${ele.getAdresse()}"></td>
+            <td>
+                <a th:href="@{liste(op=loeschen, id=${ele.getId()})}">
+                    <button class="button" style="background:red;">x</button>
+                </a>
+            </td>
+        </tr>
+    </table>
+    </div>
+    
+</body>
+</html>

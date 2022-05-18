@@ -5,35 +5,79 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Version;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
-public class BenutzerProfil {
-    private String name;
-    @DateTimeFormat (iso = ISO.DATE)
-    private LocalDate geburtsdatum;
-    private String adresse;
-    private String email;
-    private String lieblingsfarbe;
-    private String interessen;
+import de.hsrm.mi.web.projekt.validierung.Bunt;
 
+@Entity
+public class BenutzerProfil {
+    @Id
+    @GeneratedValue
+    private long id;
+
+    @Version
+    private long version;
+
+    @Size(min=3,max=60, message="{name.fehler}")
+    @NotNull(message = "Name darf nicht fehlen")
+    private String name;
+<<<<<<< HEAD
+    @DateTimeFormat (iso = ISO.DATE)
+=======
+
+    @DateTimeFormat(iso = ISO.DATE)
+    @PastOrPresent
+    @NotNull
+>>>>>>> e071d7245a42e36c80b98d795122a86d769e62c4
+    private LocalDate geburtsdatum;
+
+    
+    @NotNull
+    private String adresse;
+    
+    @Email(message = "{email.fehler}")
+    private String email;
+    
+    @NotNull
+    @Bunt(message = "{bunt.fehler}")
+    private String lieblingsfarbe;
+    
+    @NotNull
+    private String interessen;
+    
     public BenutzerProfil(){
         this.name = "";
         this.geburtsdatum = LocalDate.of(1,1,1);
         this.adresse = "";
-        this.email = "";
+        this.email = null;
         this.lieblingsfarbe = "";
         this.interessen = "";
     }
 
-    public String toString(){
-        return 
-            "Name: "+ this.name +
-            "\nGeburtsdatum: "+ this.geburtsdatum +
-            "\nAdresse: " + this.adresse +
-            "\nE-Mail: " + this.email +
-            "\nLieblingsfarbe: " + this.lieblingsfarbe +
-            "\nInteressen: " + this.interessen;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 
     public String getName() {
@@ -92,6 +136,17 @@ public class BenutzerProfil {
         return interessenListe;
     }
 
+    public String toString(){
+        return 
+            "Id: " + this.id +
+            "\nVersion: " +  this.version +
+            "\nName: " + this.name +
+            "\nGeburtsdatum: " + this.geburtsdatum +
+            "\nAdresse: " + this.adresse +
+            "\nE-Mail: " + this.email +
+            "\nLieblingsfarbe: " + this.lieblingsfarbe +
+            "\nInteressen: " + this.interessen;
+    }
     
     @Override
     public int hashCode() {
