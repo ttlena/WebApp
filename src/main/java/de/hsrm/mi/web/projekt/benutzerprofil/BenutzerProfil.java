@@ -47,9 +47,12 @@ public class BenutzerProfil {
     @NotNull
     @Bunt(message = "{bunt.fehler}")
     private String lieblingsfarbe;
-    
+
     @NotNull
     private String interessen;
+
+    private double lat;
+    private double lon;
     
     public BenutzerProfil(){
         this.name = "";
@@ -124,6 +127,22 @@ public class BenutzerProfil {
         this.interessen = interessen;
     }
 
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
     public List<String> getInteressenListe(){
         List<String> interessenListe = new ArrayList<>();
         if (!this.interessen.equals("")){
@@ -141,7 +160,9 @@ public class BenutzerProfil {
             "\nAdresse: " + this.adresse +
             "\nE-Mail: " + this.email +
             "\nLieblingsfarbe: " + this.lieblingsfarbe +
-            "\nInteressen: " + this.interessen;
+            "\nInteressen: " + this.interessen +
+            "\ngeografische Breite: " + this.lat +
+            "\ngeografische Länge: " + this.lon;
     }
     
     @Override

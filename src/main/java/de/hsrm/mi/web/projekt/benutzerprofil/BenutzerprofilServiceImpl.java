@@ -9,15 +9,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import de.hsrm.mi.web.projekt.geo.AdressInfo;
+import de.hsrm.mi.web.projekt.geo.GeoService;
+
 @Service
 public class BenutzerprofilServiceImpl implements BenutzerprofilService{
     Logger logger = LoggerFactory.getLogger(BenutzerprofilService.class);
     
     @Autowired
     private BenutzerprofilRepository repository;
+    @Autowired
+    private GeoService geoService;
 
     @Override
     public BenutzerProfil speichereBenutzerProfil(BenutzerProfil bp) {
+        logger.info(bp.toString());
+        List<AdressInfo> adressInfos = geoService.findeAdressInfo(bp.getAdresse());
+        if(adressInfos.size() > 0){
+            AdressInfo adressInfo = adressInfos.get(0);
+            bp.setLat(adressInfo.lat());
+            bp.setLon(adressInfo.lon());
+        }
         logger.info(bp.toString());
         return repository.save(bp);
     }

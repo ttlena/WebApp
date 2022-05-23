@@ -41,6 +41,8 @@
     </ol>
 
     <a th:href="@{benutzerprofil/bearbeiten}" th:text="#{profil.bearbeiten}">bearbeiten</a>
-
+    <div th:if="${profil.getLat()} != 0">
+        <a th:href="@{https://www.openstreetmap.org/#map=17/{lat}/{lon}(lat=${profil.getLat()},lon=${profil.getLon()})}" target="_blank">Mein Standort</a>
+    </div>
 </body>
 </html>
