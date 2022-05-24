@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angebotsformular</title>
+    <style>
+        .titel {
+            background-color: #487d75;
+            padding: 20px 30px;
+            color: white
+        }
+        input {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="titel">
+        <h1 th:text="#{angebot.editor.titel}">Angebot bearbeiten</h1>
+        <a th:href="@{?sprache=de}">DE</a>
+        <a th:href="@{?sprache=en}">EN</a>
+    </div>
+    <br><br><br>
+    <form th:method="POST" th:object="${angebot}" th:action="@{/benutzerprofil/angebot}">
+        <label th:text="#{angebot.editor.beschreibung}">Beschreibung</label><br>
+        <input type="text" th:field="*{beschreibung}"><br>
+        <br>
+        <label th:text="#{angebot.editor.mindestpreis}">Mindestpreis</label><br>
+        <input type="number" th:field="*{mindestpreis}"><br>
+        <br>
+        <label th:text="#{angebot.editor.ablaufzeitpunkt}">Angebotsende</label><br>
+        <input type="datetime-local" th:field="*{ablaufzeitpunkt}"><br>
+        <br>
+        <label th:text="#{angebot.editor.abholort}">Abholort</label>
+        <input type="text" th:field="*{abholort}"><br>
+        <br>
+        <input type="submit" th:value="#{angebot.editor.speichern}" style="width: auto;" value="speichern">
+    </form>
+
+</body>
+</html>

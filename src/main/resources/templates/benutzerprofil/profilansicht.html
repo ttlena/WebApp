@@ -2,6 +2,20 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Benutzerprofil</title>
+    <style>
+        .button {
+            border: none;
+            border-radius: 3px;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            background-color: red;
+        }
+    </style>
 </head>
 <body>
     <h1 th:text="#{profilansicht.titel}">Benutzerprofil</h1>
@@ -40,9 +54,27 @@
         <li th:each="ele,status : ${profil.getInteressenListe()}" th:text="${ele}"></li>
     </ol>
 
+    <!-- bearbeiten - Button -->
     <a th:href="@{benutzerprofil/bearbeiten}" th:text="#{profil.bearbeiten}">bearbeiten</a>
+    <!-- Mein Standort - Button -->
     <div th:if="${profil.getLat()} != 0">
-        <a th:href="@{https://www.openstreetmap.org/#map=17/{lat}/{lon}(lat=${profil.getLat()},lon=${profil.getLon()})}" target="_blank">Mein Standort</a>
+        <a th:href="@{'https://www.openstreetmap.org/#map=17/' + ${profil.getLat()} + '/' + ${profil.getLon()}}" target="_blank">Mein Standort</a>
+    </div>
+    
+    <!-- Angebote -->
+    <div th:if="${profil.getId() != 0}">
+        <h3 th:text="#{angebotsliste.titel}">Ihre Angebote</h3>
+        <ol>
+            <li th:each="ele,status : ${profil.getAngebote()}">
+                <a th:href="@{'https:///www.openstreetmap.org/#map=17/' + ${ele.getLat()} + '/' + ${ele.getLon()}}" target="_blank" th:text="${ele.getBeschreibung()}">Artikel x</a>
+                <label th:text="'für mindestens ' + ${ele.getMindestpreis()} + ' Ocken'">f&uuml;r mind. x Ocken</label>
+                <label th:text="'(bis ' + ${ele.getAblaufzeitpunkt()} + ')'"></label>
+                <a th:href="@{'benutzerprofil/angebot/' + ${ele.getId()} + '/del'}">
+                    <button class="button">x</button>
+                </a>
+            </li>
+        </ol>
+        <a th:href="@{benutzerprofil/angebot}" th:text="#{profil.angebote.anlegen}">neu</a>
     </div>
 </body>
 </html>

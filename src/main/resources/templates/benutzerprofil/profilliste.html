@@ -26,19 +26,19 @@
             padding: 0px 30px;
         }
         .button {
-        border: none;
-        border-radius: 3px;
-        color: white;
-        padding: 5px 10px;
-        text-align: center;
-        display: inline-block;
-        font-size: 14px;
-        margin: 4px 2px;
-        cursor: pointer;
-        background-color: red;
+            border: none;
+            border-radius: 3px;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            background-color: red;
         }
     </style>
-    <title>Document</title>
+    <title>Profilliste</title>
 </head>
 <body>
     <div class="titel">
@@ -65,7 +65,7 @@
             <td th:text="${ele.getAdresse()}"></td>
             <td>
                 <a th:href="@{liste(op=loeschen, id=${ele.getId()})}">
-                    <button class="button" style="background:red;">x</button>
+                    <button class="button">x</button>
                 </a>
             </td>
         </tr>
