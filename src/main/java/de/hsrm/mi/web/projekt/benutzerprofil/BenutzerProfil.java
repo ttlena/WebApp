@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Version;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -17,6 +20,7 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import de.hsrm.mi.web.projekt.angebot.Angebot;
 import de.hsrm.mi.web.projekt.validierung.Bunt;
 
 @Entity
@@ -53,6 +57,9 @@ public class BenutzerProfil {
 
     private double lat;
     private double lon;
+
+    @OneToMany(mappedBy = "anbieter", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Angebot> angebote;
     
     public BenutzerProfil(){
         this.name = "";
@@ -61,6 +68,7 @@ public class BenutzerProfil {
         this.email = null;
         this.lieblingsfarbe = "";
         this.interessen = "";
+        this.angebote = new ArrayList<>();
     }
 
     public long getId() {
@@ -125,6 +133,14 @@ public class BenutzerProfil {
 
     public void setInteressen(String interessen) {
         this.interessen = interessen;
+    }
+
+    public List<Angebot> getAngebote() {
+        return angebote;
+    }
+
+    public void setAngebote(List<Angebot> angebote) {
+        this.angebote = angebote;
     }
 
     public double getLat() {
