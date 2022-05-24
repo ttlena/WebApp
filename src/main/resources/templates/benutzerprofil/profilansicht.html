@@ -58,7 +58,7 @@
     <a th:href="@{benutzerprofil/bearbeiten}" th:text="#{profil.bearbeiten}">bearbeiten</a>
     <!-- Mein Standort - Button -->
     <div th:if="${profil.getLat()} != 0">
-        <a th:href="@{'https://www.openstreetmap.org/#map=17/' + ${profil.getLat()} + '/' + ${profil.getLon()}}" target="_blank">Mein Standort</a>
+        <a th:href="@{'https://www.openstreetmap.org/#map=17/' + ${profil.getLat()} + '/' + ${profil.getLon()}}" target="_blank" th:text="#{profil.meinstandort}">Mein Standort</a>
     </div>
     
     <!-- Angebote -->
