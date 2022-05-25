@@ -35,14 +35,10 @@ public class BenutzerProfil {
     @Size(min=3,max=60, message="{name.fehler}")
     @NotNull(message = "Name darf nicht fehlen")
     private String name;
-<<<<<<< HEAD
-    @DateTimeFormat (iso = ISO.DATE)
-=======
 
     @DateTimeFormat(iso = ISO.DATE)
     @PastOrPresent
     @NotNull
->>>>>>> e071d7245a42e36c80b98d795122a86d769e62c4
     private LocalDate geburtsdatum;
 
     
