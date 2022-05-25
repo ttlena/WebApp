@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import de.hsrm.mi.web.projekt.angebot.Angebot;
-import net.bytebuddy.asm.Advice.Local;
 
 @Controller
 @RequestMapping("/")

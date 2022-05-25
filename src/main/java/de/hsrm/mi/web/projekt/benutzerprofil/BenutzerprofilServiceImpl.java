@@ -81,11 +81,8 @@ public class BenutzerprofilServiceImpl implements BenutzerprofilService{
     @Override
     public void loescheAngebot(long id) {
         BenutzerProfil anbieter = angebotRepository.getById(id).getAnbieter();
-        logger.error("vor remove");
         anbieter.getAngebote().remove(angebotRepository.getById(id));
-        logger.error("nach remove");
         angebotRepository.deleteById(id);
-        logger.error("nach deleteById");
     }
     
 }
