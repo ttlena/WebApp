@@ -27,7 +27,7 @@ public class GebotRestController {
     @Autowired
     GebotService gebotService;
 
-    @GetMapping(value="/gebot", produces=MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+    @GetMapping(value="/gebot", produces=MediaType.APPLICATION_JSON_VALUE)
     public List<GetGebotResponseDTO> getGetGebotResponseDTOs() {
         List<GetGebotResponseDTO> gebote = new ArrayList<>();
         for(Gebot g: gebotRepository.findAll()){
