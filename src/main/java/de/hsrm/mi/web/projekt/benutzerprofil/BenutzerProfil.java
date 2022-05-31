@@ -21,6 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import de.hsrm.mi.web.projekt.angebot.Angebot;
+import de.hsrm.mi.web.projekt.gebot.Gebot;
 import de.hsrm.mi.web.projekt.validierung.Bunt;
 
 @Entity
@@ -40,7 +41,6 @@ public class BenutzerProfil {
     @PastOrPresent
     @NotNull
     private LocalDate geburtsdatum;
-
     
     @NotNull
     private String adresse;
@@ -60,6 +60,9 @@ public class BenutzerProfil {
 
     @OneToMany(mappedBy = "anbieter", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Angebot> angebote;
+
+    @OneToMany(mappedBy = "gebieter")
+    private List<Gebot> gebote;
     
     public BenutzerProfil(){
         this.name = "";
@@ -69,6 +72,7 @@ public class BenutzerProfil {
         this.lieblingsfarbe = "";
         this.interessen = "";
         this.angebote = new ArrayList<>();
+        this.gebote = new ArrayList<>();
     }
 
     public long getId() {
@@ -157,6 +161,14 @@ public class BenutzerProfil {
 
     public void setLon(double lon) {
         this.lon = lon;
+    }
+
+    public void setGebot(Gebot gebot){
+        this.gebote.add(gebot);
+    }
+
+    public List<Gebot> getGebote(){
+        return this.gebote;
     }
 
     public List<String> getInteressenListe(){

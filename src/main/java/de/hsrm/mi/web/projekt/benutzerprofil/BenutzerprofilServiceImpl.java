@@ -84,5 +84,15 @@ public class BenutzerprofilServiceImpl implements BenutzerprofilService{
         anbieter.getAngebote().remove(angebotRepository.getById(id));
         angebotRepository.deleteById(id);
     }
+
+    @Override
+    public List<Angebot> alleAngebote() {
+        return angebotRepository.findAll();
+    }
+
+    @Override
+    public Optional<Angebot> findeAngebotMitId(long angebotid) {
+        return angebotRepository.findById(angebotid);
+    }
     
 }
