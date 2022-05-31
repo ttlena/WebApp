@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<<<<<<< HEAD
-
-=======
 <head>
     <meta charset="utf-8">
     <style>
@@ -19,36 +16,12 @@
         }
     </style>
 </head>
->>>>>>> e071d7245a42e36c80b98d795122a86d769e62c4
 <body>
     <h1 th:text="#{profilbearbeiten.titel}">Benutzerprofil bearbeiten</h1>
     <a th:href="@{?sprache=de}">DE</a>
     <a th:href="@{?sprache=en}">EN</a>
     <h3 th:text="#{profil.ihredaten}">Ihre Daten</h3>
     
-<<<<<<< HEAD
-    <form method="POST" th:object="${profil}" th:action="@{/benutzerprofil/bearbeiten}">
-        <label for="name">Name:</label><br>
-        <input type="text" style="width: 80%;" th:field="*{name}"><br>
-        
-        <label for="geburtsdatum">Geburtsdatum:</label><br>
-        <input type="date" style="width: 80%;" th:value="*{geburtsdatum}"><br>
-        
-        <label for="adresse">Adresse:</label><br>
-        <input type="text" style="width: 80%;" th:field="*{adresse}"><br>
-        
-        <label for="email">eMail:</label><br>
-        <input type="text" style="width: 80%;" th:field="*{email}"><br>
-        
-        <label for="lieblingsfarbe">Lieblingsfarbe</label><br>
-        <input type="color"style="width: 80%;" th:value="*{lieblingsfarbe}"><br>
-        
-        <label for="interessen">Interessen (durch Komma getrennt)</label><br>
-        <input type="text" style="width: 80%;" th:field="*{interessen}"><br><br>
-        
-        <input type="submit" value="speichern">
-        <input type="button" value="abbrechen">
-=======
     <form th:method="POST" th:object="${profil}" th:action="@{/benutzerprofil/bearbeiten}">
         <label for="name" th:text="#{profil.name}">Name:</label><br>
         <input type="text" name="name" style="width:100%;" th:field="*{name}" th:errorclass="fehler"><br>
@@ -82,7 +55,6 @@
 
         <input type="submit" th:value="#{profil.speichern}">
         <button onclick="window.location.href='/benutzerprofil'" type="reset" th:text = "#{profil.abbrechen}"></button>
->>>>>>> e071d7245a42e36c80b98d795122a86d769e62c4
     </form>
 </body>
 </html>
