@@ -16,9 +16,7 @@
         <br><br><br>
 
         <h3>About...</h3>
-        <div v-for="a in angebote">
-          <AngebotListItem :angebot="a" />
-        </div>
+        <AngebotListItem :angebot="angebote[0]" />
         <button v-on:click="bietenSimulieren">bieten simulieren</button>
 
         <br><br>
