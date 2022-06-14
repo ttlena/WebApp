@@ -24,7 +24,7 @@ function clear() {
 
 <template>
     <div>
-        <input style="width:90%;" type="text" v-model="suchfeld" placeholder="Suchbegriff" />
+        <input type="text" v-model="suchfeld" placeholder="Suchbegriff" />
         <button style="width:auto;" v-on:click="clear">clear</button>
     </div>
     <AngebotListItem :angebot="a" v-for="a in listitems" />
