@@ -17,9 +17,9 @@ import de.hsrm.mi.web.projekt.geo.GeoService;
 
 @Service
 @Transactional
-public class BenutzerprofilServiceImpl implements BenutzerprofilService{
+public class BenutzerprofilServiceImpl implements BenutzerprofilService {
     Logger logger = LoggerFactory.getLogger(BenutzerprofilService.class);
-    
+
     @Autowired
     private BenutzerprofilRepository benutzerProfilRepository;
     @Autowired
@@ -30,7 +30,7 @@ public class BenutzerprofilServiceImpl implements BenutzerprofilService{
     @Override
     public BenutzerProfil speichereBenutzerProfil(BenutzerProfil bp) {
         List<AdressInfo> adressInfos = geoService.findeAdressInfo(bp.getAdresse());
-        if(adressInfos.size() > 0){
+        if (adressInfos.size() > 0) {
             AdressInfo adressInfo = adressInfos.get(0);
             bp.setLat(adressInfo.lat());
             bp.setLon(adressInfo.lon());
@@ -40,8 +40,8 @@ public class BenutzerprofilServiceImpl implements BenutzerprofilService{
 
     @Override
     public Optional<BenutzerProfil> holeBenutzerProfilMitId(Long id) {
-        for (BenutzerProfil bp: benutzerProfilRepository.findAll()){
-            if (bp.getId() == id){
+        for (BenutzerProfil bp : benutzerProfilRepository.findAll()) {
+            if (bp.getId() == id) {
                 return Optional.of(bp);
             }
         }
@@ -60,29 +60,29 @@ public class BenutzerprofilServiceImpl implements BenutzerprofilService{
 
     @Override
     public void fuegeAngebotHinzu(long id, Angebot angebot) {
-       List<AdressInfo> adressen = geoService.findeAdressInfo(angebot.getAbholort());
-       if (!adressen.isEmpty()){
-           AdressInfo abholort = adressen.get(0);
-           angebot.setLat(abholort.lat());
-           angebot.setLon(abholort.lon());
-       }else{
-        angebot.setLat(0);
-        angebot.setLon(0);
-       }
-       BenutzerProfil benutzerprofil = holeBenutzerProfilMitId(id).orElseThrow();
-       angebot.setAnbieter(benutzerprofil);
-       benutzerprofil.getAngebote().add(angebot);
-       logger.info("Angebotsanzahl: " + benutzerprofil.getAngebote().size());
-       for (Angebot ang: benutzerprofil.getAngebote()){
-           logger.info(ang.getBeschreibung());
-       }
+        List<AdressInfo> adressen = geoService.findeAdressInfo(angebot.getAbholort());
+        if (!adressen.isEmpty()) {
+            AdressInfo abholort = adressen.get(0);
+            angebot.setLat(abholort.lat());
+            angebot.setLon(abholort.lon());
+        } else {
+            angebot.setLat(0);
+            angebot.setLon(0);
+        }
+        BenutzerProfil benutzerprofil = holeBenutzerProfilMitId(id).orElseThrow();
+        angebot.setAnbieter(benutzerprofil);
+        benutzerprofil.getAngebote().add(angebot);
+        logger.info("Angebotsanzahl: " + benutzerprofil.getAngebote().size());
+        for (Angebot ang : benutzerprofil.getAngebote()) {
+            logger.info(ang.getBeschreibung());
+        }
     }
 
     @Override
     public void loescheAngebot(long id) {
-        BenutzerProfil anbieter = angebotRepository.getById(id).getAnbieter();
-        anbieter.getAngebote().remove(angebotRepository.getById(id));
-        angebotRepository.deleteById(id);
+        BenutzerProfil anbieter = angebotRepository.findById(id).get().getAnbieter();
+        anbieter.getAngebote().remove(angebotRepository.findById(id).get());
+        angebotRepository.delete(angebotRepository.findById(id).get());
     }
 
     @Override
@@ -94,5 +94,5 @@ public class BenutzerprofilServiceImpl implements BenutzerprofilService{
     public Optional<Angebot> findeAngebotMitId(long angebotid) {
         return angebotRepository.findById(angebotid);
     }
-    
+
 }
