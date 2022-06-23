@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import AngebotListItem from './AngebotListItem.vue';
-import { useFakeAngebot } from '@/services/useFakeAngebot';
+import { useAngebot } from '@/services/useAngebot';
 import { ref, computed } from 'vue';
 
-const { angebote } = useFakeAngebot();
+const { angebote } = useAngebot();
 const suchfeld = ref("")
 const listitems = computed(() => {
     const n: number = suchfeld.value.length;
     if (n < 1) {
-        return angebote.value;
+        return angebote.angebotliste;
     } else {
-        return angebote.value.filter(e => (e.abholort.toLowerCase().includes(suchfeld.value.toLowerCase()) ||
+        return angebote.angebotliste.filter(e => (e.abholort.toLowerCase().includes(suchfeld.value.toLowerCase()) ||
             e.beschreibung.toLowerCase().includes(suchfeld.value.toLowerCase()) || e.anbietername.toLowerCase().includes(suchfeld.value.toLowerCase()))
         );
     }
