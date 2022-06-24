@@ -1,4 +1,4 @@
-import { reactive, readonly, onMounted } from "vue";
+import { reactive, readonly } from "vue";
 import type { IAngebotListeItem } from "./IAngebotListeItem";
 
 interface IAngebotState {
@@ -26,10 +26,6 @@ export function useAngebot() {
             angebotState.errormessage = `FEHLER: ${reason}`
         }
     }
-
-    onMounted(async() => {
-        await updateAngebote()
-    });
 
     return {
         angebote: readonly(angebotState),

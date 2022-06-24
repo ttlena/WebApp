@@ -1,9 +1,13 @@
 <script setup lang="ts">
     import AngebotListe from '@/components/AngebotListe.vue';
     import { useAngebot } from '@/services/useAngebot';
+    import { onMounted, reactive, ref, toRef } from 'vue';
 
     const { angebote, updateAngebote } = useAngebot();
-
+    
+    onMounted(async() => {
+        const angebote = await updateAngebote()
+    });
     
 </script>
 
