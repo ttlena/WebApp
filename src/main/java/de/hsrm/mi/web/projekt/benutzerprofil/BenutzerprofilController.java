@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import de.hsrm.mi.web.projekt.angebot.Angebot;
+import de.hsrm.mi.web.projekt.messaging.BackendInfoService;
+import de.hsrm.mi.web.projekt.messaging.BackendOperation;
 
 @Controller
 @RequestMapping("/")
@@ -31,6 +33,9 @@ public class BenutzerprofilController {
     
     @Autowired
     BenutzerprofilService service;
+
+    @Autowired
+    BackendInfoService backendInfoService;
 
     @ModelAttribute("profil")
     public void initProfil(Model m){
@@ -129,6 +134,7 @@ public class BenutzerprofilController {
                     Model m){
         service.fuegeAngebotHinzu(profil.getId(), angebot);
         m.addAttribute("profil", service.holeBenutzerProfilMitId(profil.getId()));
+        backendInfoService.sendInfo("/angebot", BackendOperation.CREATE, angebot.getId());
         return "redirect:/benutzerprofil";
     }
 
@@ -139,6 +145,7 @@ public class BenutzerprofilController {
                     Model m){
         service.loescheAngebot(id);
         m.addAttribute("profil", service.holeBenutzerProfilMitId(profil.getId()).get());
+        backendInfoService.sendInfo("/angebot/{id}/del", BackendOperation.DELETE, id);
         return "redirect:/benutzerprofil";
     }
 }
