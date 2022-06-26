@@ -3,10 +3,11 @@
     import { useAngebot } from '@/services/useAngebot';
     import { onMounted, reactive, ref, toRef } from 'vue';
 
-    const { angebote, updateAngebote } = useAngebot();
+    const { angebote, updateAngebote, receiveAngebotMessages } = useAngebot();
     
     onMounted(async() => {
-        const angebote = await updateAngebote()
+        updateAngebote();
+        receiveAngebotMessages();
     });
     
 </script>

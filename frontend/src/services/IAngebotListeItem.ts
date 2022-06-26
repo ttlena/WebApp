@@ -1,6 +1,3 @@
-
-// Verwendung: 
-// import type { IAngebotListeItem } from '@/services/IAngebotListeItem';
 export interface IAngebotListeItem {
     angebotid: number,
     beschreibung: string,
