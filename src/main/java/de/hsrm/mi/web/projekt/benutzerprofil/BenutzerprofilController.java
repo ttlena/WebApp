@@ -1,5 +1,6 @@
 package de.hsrm.mi.web.projekt.benutzerprofil;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,6 +25,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import de.hsrm.mi.web.projekt.angebot.Angebot;
 import de.hsrm.mi.web.projekt.messaging.BackendInfoService;
 import de.hsrm.mi.web.projekt.messaging.BackendOperation;
+import de.hsrm.mi.web.projekt.projektuser.ProjektUserService;
 
 @Controller
 @RequestMapping("/")
@@ -32,20 +34,28 @@ public class BenutzerprofilController {
     Logger logger = LoggerFactory.getLogger(BenutzerprofilController.class);
     
     @Autowired
-    BenutzerprofilService service;
+    BenutzerprofilService benutzerprofilService;
+
+    @Autowired
+    ProjektUserService projektUserService;
 
     @Autowired
     BackendInfoService backendInfoService;
 
     @ModelAttribute("profil")
-    public void initProfil(Model m){
-        BenutzerProfil bp = new BenutzerProfil();
-        m.addAttribute("profil", bp);
+    public void initProfil(Model m, Principal principal){
+        BenutzerProfil benutzerProfil = new BenutzerProfil();
+        if(principal != null) {
+            benutzerProfil = projektUserService.findeBenutzer(principal.getName()).getBenutzerProfil();
+            if(benutzerProfil == null)
+                benutzerProfil = new BenutzerProfil();
+        }
+        m.addAttribute("profil", benutzerProfil);
     }
 
     @ModelAttribute("profilliste")
     public void initListe(Model m){
-        List<BenutzerProfil> profilliste = service.alleBenutzerProfile();
+        List<BenutzerProfil> profilliste = benutzerprofilService.alleBenutzerProfile();
         m.addAttribute("profilliste", profilliste);
     }
 
@@ -83,7 +93,7 @@ public class BenutzerprofilController {
         if (result.hasErrors()){
             return "benutzerprofil/profileditor";
         }else{
-            m.addAttribute("profil", service.speichereBenutzerProfil(profil));
+            m.addAttribute("profil", benutzerprofilService.speichereBenutzerProfil(profil));
         }
         return "redirect:/benutzerprofil";
     }
@@ -93,7 +103,7 @@ public class BenutzerprofilController {
                 Model m, 
                 Locale locale){
         m.addAttribute("sprache", locale);
-        m.addAttribute("profilliste", service.alleBenutzerProfile());
+        m.addAttribute("profilliste", benutzerprofilService.alleBenutzerProfile());
         return "benutzerprofil/profilliste";
     }
 
@@ -103,7 +113,7 @@ public class BenutzerprofilController {
                 Model m,
                 Locale locale){
         m.addAttribute("sprache", locale);
-        service.loescheBenutzerProfilMitId(id);
+        benutzerprofilService.loescheBenutzerProfilMitId(id);
         return "redirect:/benutzerprofil/liste";
     }
 
@@ -113,8 +123,8 @@ public class BenutzerprofilController {
                 Model m, 
                 Locale locale){
         m.addAttribute("sprache", locale);
-        if (service.holeBenutzerProfilMitId(id).isPresent()){
-            BenutzerProfil pb = service.holeBenutzerProfilMitId(id).get();
+        if (benutzerprofilService.holeBenutzerProfilMitId(id).isPresent()){
+            BenutzerProfil pb = benutzerprofilService.holeBenutzerProfilMitId(id).get();
             m.addAttribute("profil", pb);
         }
         return "redirect:/benutzerprofil/bearbeiten";
@@ -132,8 +142,8 @@ public class BenutzerprofilController {
                     @SessionAttribute("profil") BenutzerProfil profil,
                     @ModelAttribute("angebot") Angebot angebot, 
                     Model m){
-        service.fuegeAngebotHinzu(profil.getId(), angebot);
-        m.addAttribute("profil", service.holeBenutzerProfilMitId(profil.getId()));
+        benutzerprofilService.fuegeAngebotHinzu(profil.getId(), angebot);
+        m.addAttribute("profil", benutzerprofilService.holeBenutzerProfilMitId(profil.getId()));
         backendInfoService.sendInfo("/angebot", BackendOperation.CREATE, angebot.getId());
         return "redirect:/benutzerprofil";
     }
@@ -143,8 +153,8 @@ public class BenutzerprofilController {
                     @PathVariable Long id,
                     @SessionAttribute("profil") BenutzerProfil profil,
                     Model m){
-        service.loescheAngebot(id);
-        m.addAttribute("profil", service.holeBenutzerProfilMitId(profil.getId()).get());
+        benutzerprofilService.loescheAngebot(id);
+        m.addAttribute("profil", benutzerprofilService.holeBenutzerProfilMitId(profil.getId()).get());
         backendInfoService.sendInfo("/angebot/{id}/del", BackendOperation.DELETE, id);
         return "redirect:/benutzerprofil";
     }
