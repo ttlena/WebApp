@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .titel {
+            background-color: #487d75;
+            padding: 20px 30px;
+            color: white
+        }
+        .fehler {
+            border:2px solid;
+            border-color: red;
+        }
+        .fehlermeldung {
+            font-size: x-small;
+            color: red;
+        }
+        input {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="titel">
+        <h1 th:text="#{registeruser.titel}">Benutzer registrieren</h1>
+        <a th:href="@{?sprache=de}">DE</a>
+        <a th:href="@{?sprache=en}">EN</a>
+    </div>
+    <br><br>
+    <h3 th:text="#{registeruser.ihredaten}">Ihre Registrierung</h3>
+    <form th:method="POST" th:object="${projektuser}" th:action="@{/registrieren}">
+        <label for="username" th:text="#{registeruser.username}">Ihr gewählter Login-Name</label><br>
+        <input type="text" name="username" th:field="*{username}" th:errorclass="fehler"><br>
+        <!-- <input type="text" name="username"> -->
+        <label class="fehlermeldung" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></label>
+        <br>
+        <label for="password" th:text="#{registeruser.password}">Losung</label><br>
+        <input type="password" name="password" th:field="*{password}" th:errorclass="fehler"><br>
+        <!-- <input type="password" name="password"> -->
+        <label class="fehlermeldung" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></label>
+        <br><br>
+        <input type="submit" th:value="#{registeruser.speichern}" style="width: auto;" value="abspeichern">
+        <button onclick="window.location.href='/login'" type="reset" th:text = "#{registeruser.abbrechen}">abbrechen</button>
+    </form>
+</body>
+</html>
