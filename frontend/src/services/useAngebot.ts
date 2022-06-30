@@ -17,7 +17,6 @@ export function useAngebot() {
 
     async function updateAngebote(): Promise<void> {
         try {
-            console.log("drin")
             const url = `api/angebot`
             const response = await fetch(url)
             if (!response.ok) {
@@ -49,7 +48,7 @@ export function useAngebot() {
                 console.log("im subscribe drin, message: " + message);
                 updateAngebote();
                 let jsonobj = JSON.parse(message.body);
-                console.log(message.body);
+                console.log("message.body: " + message.body);
                 let backendInfoMessage = reactive({
                     ...jsonobj
                 } as IBackendInfoMessage)

@@ -155,7 +155,7 @@ public class BenutzerprofilController {
                     Model m){
         benutzerprofilService.loescheAngebot(id);
         m.addAttribute("profil", benutzerprofilService.holeBenutzerProfilMitId(profil.getId()).get());
-        backendInfoService.sendInfo("/angebot/{id}/del", BackendOperation.DELETE, id);
+        backendInfoService.sendInfo("/angebot", BackendOperation.DELETE, id);
         return "redirect:/benutzerprofil";
     }
 }
