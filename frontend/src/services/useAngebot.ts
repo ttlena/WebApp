@@ -12,7 +12,7 @@ const angebotState: IAngebotState = reactive({ angebotliste: [], errormessage: '
 
 export function useAngebot() {
 
-    const wsurl = `ws://localhost:8080/stompbroker`;
+    const wsurl = `ws://${window.location.host}/stompbroker`;
     const DEST = "/topic/angebot";
 
     async function updateAngebote(): Promise<void> {
