@@ -44,11 +44,20 @@ async function login(username: string, password: string) {
      * 
      * Falls Fehler, wird ein logout() ausgeführt und auf die Fehlermeldung in 'errormessage' geschrieben
      */
-    const url = `/api/gebot`
+    console.log("im login() drin")
+    console.log("user name ", username)
+    console.log("password", password)
+
+    const url = `/api/login`
     let neuerUser: IJwtLoginRequestDTO = { username: username, password: password }
-    fetch(`/api/gebot`, {
+    console.log("neuerUser", neuerUser)
+
+    await fetch(url, {
         method: 'POST',
-        body: JSON.stringify(neuerUser)
+        body: JSON.stringify(neuerUser),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
     .then( response => {
         if (!response.ok) {
@@ -59,15 +68,18 @@ async function login(username: string, password: string) {
         }
     })
     .then( jsondata => {
-        let response:IJwtLoginResponseDTO = JSON.parse(jsondata)
-        loginState.username = response.username
-        loginState.name = response.name
-        loginState.benutzerprofilid = response.benutzerprofilid
-        loginState.jwtToken = response.jwtToken
+        console.log(jsondata)
+        //let response:IJwtLoginResponseDTO = JSON.parse(jsondata)
+        loginState.username = jsondata.username
+        loginState.name = jsondata.name
+        loginState.benutzerprofilid = jsondata.benutzerprofilid
+        loginState.jwtToken = jsondata.jwtToken
         loginState.loggedin = true
+        loginState.errormessage = ''
     })
     .catch( fehler => {
         logout()
+        console.log(`Fehler: ${fehler}`)
         loginState.errormessage = `Fehler: ${fehler}`
     })
 

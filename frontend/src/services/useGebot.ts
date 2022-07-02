@@ -137,7 +137,11 @@ export function useGebot(angebotid: number) {
          */
         try {
             const url = `/api/gebot`
-            const response = await fetch(url)
+            const response = await fetch(url, {
+                headers: {
+                    'Authorization': 'Bearer ' + logindata.jwtToken
+                }
+            })
             if (response.ok) {
                 let gebotListe:IGetGebotResponseDTO[] = await response.json()
                 gebotListe = gebotListe.filter(gebot => gebot.angebotid === angebotid)
@@ -177,7 +181,12 @@ export function useGebot(angebotid: number) {
         try {
             const url = `/api/gebot`
             let neuesGebot:IAddGebotRequestDTO = {benutzerprofilid: logindata.benutzerprofilid, angebotid: angebotid, betrag:betrag} 
-            const response = await fetch(url, {method: 'POST', body: JSON.stringify(neuesGebot)})
+            const response = await fetch(url, {
+                method: 'POST', 
+                headers: {
+                    'Authorization': 'Bearer ' + logindata.jwtToken
+                },
+                body: JSON.stringify(neuesGebot)})
             console.log("ID response bei sendeGebot(): " + response.text())
             gebotState.errormessage = ''
         } catch (fehler) {

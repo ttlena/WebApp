@@ -2,6 +2,7 @@ import { reactive, readonly } from "vue";
 import type { IAngebotListeItem } from "./IAngebotListeItem";
 import { Client, type Message } from '@stomp/stompjs';
 import type { IBackendInfoMessage } from './IBackendInfoMessage';
+import { useLogin } from "./useLogin";
 
 interface IAngebotState {
     angebotliste: IAngebotListeItem[],
@@ -18,13 +19,20 @@ export function useAngebot() {
     async function updateAngebote(): Promise<void> {
         try {
             const url = `api/angebot`
-            const response = await fetch(url)
+            const response = await fetch(url, {
+                headers: {
+                    'Authorization': 'Bearer ' + useLogin().logindata.jwtToken
+                }
+            })
+            console.log("useAngebot(): response aus fetch(/api/angebot - " + response.json.toString)
             if (!response.ok) {
                 angebotState.errormessage = response.statusText
+                console.log("useAngebot(): response ok")
             } else {
                 angebotState.errormessage = "";
                 const jsondata: IAngebotListeItem[] = await response.json()
                 angebotState.angebotliste = jsondata
+                console.log("useAngebot(): response nicht ok")
             }
         } catch (reason) {
             angebotState.errormessage = `FEHLER: ${reason}`
