@@ -1,5 +1,8 @@
+import { useLogin } from '@/services/useLogin'
 import { createRouter, createWebHistory } from 'vue-router'
 import AngeboteView from '../views/AngeboteView.vue'
+import GebotView from '../views/GebotView.vue'
+import LoginView from '../views/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,8 +19,25 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/gebot/:angebotidstr',
+      name: 'GebotView',
+      component: GebotView,
+      props: true
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: LoginView
     }
   ]
+})
+
+router.beforeEach(async (to) => {
+  if (useLogin().logindata.loggedin == false && to.path !== '/login'){
+    return { name: 'Login'}
+  }
 })
 
 export default router
