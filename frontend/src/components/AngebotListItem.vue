@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
 import type { IAngebotListeItem } from '@/services/IAngebotListeItem';
 import GeoLink from './GeoLink.vue'
 import { ref } from 'vue';
@@ -17,7 +18,9 @@ function details() {
 <template>
     <table>
         <thead>
-            <th style="width:25%; text-align: left;">{{props.angebot.beschreibung}}</th>
+            <th style="width:25%; text-align: left;">
+                <RouterLink to="`/gebot/${props.angebot.angebotid}`">{{props.angebot.beschreibung}}</RouterLink>
+            </th>
             <th style="width:45%; text-align: right;">{{props.angebot.gebote}} Gebote</th>
             <th style="width:30%; text-align: center;"> {{props.angebot.topgebot}} EUR </th>
             <button v-on:click="details" style="width:auto; align: right;">
