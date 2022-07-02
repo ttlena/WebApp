@@ -1,22 +1,25 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { useLogin } from './services/useLogin'
+const { logindata } = useLogin()
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/login">Login/Logout</RouterLink>
       </nav>
     </div>
   </header>
-
-  <RouterView />
+  <body>
+    <h4 v-if="logindata.loggedin == true">Sie sind {{logindata.username}}</h4>
+    <RouterView />
+  </body>
 </template>
 
 <style>
