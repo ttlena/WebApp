@@ -156,12 +156,12 @@ export function useGebot(angebotid: number) {
                 }
             })
             if (response.ok) {
-                let gebotListe:IGetGebotResponseDTO[] = await response.json()
+                let gebotListe: IGetGebotResponseDTO[] = await response.json()
                 gebotListe = gebotListe.filter(gebot => gebot.angebotid === angebotid)
                 receiveGebotMessages()
                 let topbetrag = Math.max(...gebotListe.map(gebot => gebot.betrag))
                 let topgebot = gebotListe.find((o) => { return o.betrag == topbetrag })
-                if (topgebot != undefined) {
+                if (topgebot != undefined && gebotState.topgebot < topbetrag) {
                     gebotState.topgebot = topbetrag
                     gebotState.topbieter = topgebot.gebietername
                 }

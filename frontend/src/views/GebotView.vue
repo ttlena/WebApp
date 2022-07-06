@@ -31,12 +31,6 @@ let listitems = computed(() => {
     })
 })
 
-let topgebot = computed(() => {
-    return gebote.gebotliste.find(ele => {
-        return (ele.angebotid == parseInt(props.angebotidstr)) && (ele.betrag == gebote.topgebot)
-    })
-})
-
 const restzeit = ref<number>()
 function updateRestzeit() {
     if (angebot != undefined) {
@@ -75,6 +69,12 @@ let sortedGebotListe = computed(() => {
         return o.betrag == topbetrag
     })
     return gebotListe
+})
+
+let topgebot = computed(() => {
+    return gebote.gebotliste.find(ele => {
+        return (ele.angebotid == parseInt(props.angebotidstr)) && (ele.betrag == gebote.topgebot)
+    })
 })
 
 </script>
@@ -119,7 +119,7 @@ let sortedGebotListe = computed(() => {
             </div>
             <label>weitere Gebote:</label>
             <tr v-for="gebot in sortedGebotListe" style="border-bottom: 1px solid #ddd;">
-                <span v-if="gebot.betrag != gebote.topgebot">
+                <span v-if="gebot.gebietername != gebote.topbieter">
                     <td>{{ gebot.gebotzeitpunkt }}</td>
                     <td>{{ gebot.gebietername }}</td>
                     <td>bietet {{ gebot.betrag }} EUR</td>
