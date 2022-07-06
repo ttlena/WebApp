@@ -5,26 +5,26 @@ import GeoLink from '@/components/GeoLink.vue';
 import { useAngebot } from '@/services/useAngebot';
 import { useGebot } from '@/services/useGebot';
 import { onMounted, ref } from 'vue';
-import { computed } from '@vue/reactivity';
+import { computed, reactive, type ComputedRef } from '@vue/reactivity';
 import { useLogin } from '@/services/useLogin';
 
 const props = defineProps<{
     angebotidstr: string
 }>()
-console.log("angebotidstr: "+props.angebotidstr)
+console.log("angebotidstr: " + props.angebotidstr)
 
 const { angebote } = useAngebot();
 const { gebote, updateGebote, sendeGebot } = useGebot(parseInt(props.angebotidstr));
 const { logindata } = useLogin();
 
 onMounted(async () => {
-    updateGebote()
+    await updateGebote()
     useLogin()
 });
 
 let angebot = angebote.angebotliste.find((ele) => { return ele.angebotid == parseInt(props.angebotidstr) })
-const eingabefeld = ref("")
-const listitems = computed(() => {
+const eingabefeld = ref(0)
+let listitems = computed(() => {
     let gebote_mit_angebotid = gebote.gebotliste.filter(e => (e.angebotid == parseInt(props.angebotidstr)))
     return gebote_mit_angebotid.sort((a, b) => {
         return new Date(a.gebotzeitpunkt).getTime() - new Date(b.gebotzeitpunkt).getTime()
@@ -40,13 +40,42 @@ let topgebot = computed(() => {
 const restzeit = ref<number>()
 function updateRestzeit() {
     if (angebot != undefined) {
-        restzeit.value = angebot.ablaufzeitpunkt.getTime() - Date.now()
+        restzeit.value = new Date(angebot.ablaufzeitpunkt).getTime() - Date.now()
+        restzeit.value = Math.ceil(restzeit.value / 1000)
         if (restzeit.value <= 0) {
             clearInterval(timerid)
         }
     }
 }
 let timerid = setInterval(() => { updateRestzeit() }, restzeit.value)
+
+async function gebotSenden(): Promise<void> {
+    console.log("Eingabe für Gebot: " + eingabefeld.value)
+    await sendeGebot(eingabefeld.value)
+        .then(() => {
+            listitems = computed(() => {
+                let gebote_mit_angebotid = gebote.gebotliste.filter(e => (e.angebotid == parseInt(props.angebotidstr)))
+                console.log("gebote mit der angebotid: " + gebote_mit_angebotid.length)
+                return gebote_mit_angebotid.sort((a, b) => {
+                    return new Date(a.gebotzeitpunkt).getTime() - new Date(b.gebotzeitpunkt).getTime()
+                })
+            })
+            console.log("gebotliste length: " + listitems.length)
+        })
+    await updateGebote()
+
+}
+let sortedGebotListe = computed(() => {
+    let gebotListe = gebote.gebotliste.slice()
+    gebotListe.sort((a, b) => {
+        return new Date(b.gebotzeitpunkt).getTime() - new Date(a.gebotzeitpunkt).getTime()
+    })
+    let topbetrag = Math.max(...gebotListe.map(o => o.betrag))
+    let topgebot = gebotListe.find((o) => {
+        return o.betrag == topbetrag
+    })
+    return gebotListe
+})
 
 </script>
 
@@ -63,9 +92,9 @@ let timerid = setInterval(() => { updateRestzeit() }, restzeit.value)
     <br>
     <!-- Angebot-Angaben anzeigen, falls gefunden -->
     <div v-if="angebot != undefined">
-        <h3>Versteigerung {{ angebot.beschreibung }} ab {{ angebot.topgebot }} EUR</h3>
+        <h3>Versteigerung {{ angebot.beschreibung }} ab {{ angebot.mindestpreis }} EUR</h3>
         <p>von {{ angebot.anbietername }}, abholbar in </p>
-        <GeoLink :lat="angebot.lat" :lon="angebot.lon"></GeoLink>
+        <GeoLink :lat="angebot.lat" :lon="angebot.lon">{{ angebot.abholort }}</GeoLink>
         <p>bis {{ angebot.ablaufzeitpunkt }}</p>
         <br>
     </div>
@@ -74,21 +103,29 @@ let timerid = setInterval(() => { updateRestzeit() }, restzeit.value)
         Sekunden</label>
     <!-- Gebot abgeben -->
     <div>
-        <input type="number" :model="eingabefeld">
-        <button @click="sendeGebot(parseInt(eingabefeld))"
-            style="width:auto; background-color: #487d75;">bieten</button>
+        <input type="number" v-model="eingabefeld">
+        <button @click="gebotSenden()" style="width:auto; background-color: #487d75;">bieten</button>
     </div>
-    <table v-if="listitems.length > 0">
-        <tr v-for="index in 10" :key="index" style="border-bottom: 1px solid #fff">
-            <td>{{ topgebot?.gebotzeitpunkt }}</td>
-            <td>{{ gebote.topbieter }}</td>
-            <td>bietet {{ gebote.topgebot }} EUR</td>
-        </tr>
-        <tr v-for="index in 10" :key="index" style="border-bottom: 1px solid #ddd">
-            <td>{{ listitems[index].gebotzeitpunkt }}</td>
-            <td>{{ listitems[index].gebietername }}</td>
-            <td>bietet {{ listitems[index].betrag }} EUR</td>
-        </tr>
+    <!-- Gebot-Liste anzeigen lassen -->
+    <table v-if="gebote.gebotliste.length > 0" style="border-collapse: collapse;">
+        <tbody>
+            <label>Topgebot:</label>
+            <div>
+                <tr style="border-bottom: 1pt solid #fff;">
+                    <td>{{ topgebot?.gebotzeitpunkt }}</td>
+                    <td>{{ gebote.topbieter }}</td>
+                    <td>bietet {{ gebote.topgebot }} EUR</td>
+                </tr>
+            </div>
+            <label>weitere Gebote:</label>
+            <tr v-for="gebot in sortedGebotListe" style="border-bottom: 1px solid #ddd;">
+                <span v-if="gebot.betrag != gebote.topgebot">
+                    <td>{{ gebot.gebotzeitpunkt }}</td>
+                    <td>{{ gebot.gebietername }}</td>
+                    <td>bietet {{ gebot.betrag }} EUR</td>
+                </span>
+            </tr>
+        </tbody>
     </table>
 
 </template>

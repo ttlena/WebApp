@@ -40,8 +40,8 @@ export function useGebot(angebotid: number) {
     }
 
 
-    const gebotState: IGebotState = /* reaktives Objekt auf Basis des Interface <IGebotState> */ reactive({angebotid: 0, topgebot: 0, topbieter: '', gebotliste: [], receivingMessages: false, errormessage: ''});
-    
+    const gebotState: IGebotState = /* reaktives Objekt auf Basis des Interface <IGebotState> */ reactive({ angebotid: 0, topgebot: 0, topbieter: '', gebotliste: [], receivingMessages: false, errormessage: '' });
+
 
     function processGebotDTO(gebotDTO: IGetGebotResponseDTO) {
         const dtos = JSON.stringify(gebotDTO)
@@ -52,12 +52,15 @@ export function useGebot(angebotid: number) {
          * falls vorhanden, hat der User hier schon geboten und das Gebot wird nur aktualisiert (Betrag/Gebot-Zeitpunkt)
          * falls nicht, ist es ein neuer Bieter für dieses Angebot und das DTO wird vorne in die gebotliste des State-Objekts aufgenommen
          */
-        let gebot = gebotState.gebotliste.find((gebot) => {return ((gebot.gebieterid === gebotDTO.gebieterid) && (gebot.angebotid === gebotDTO.angebotid))})
+        let gebot = gebotState.gebotliste.find((gebot) => { return ((gebot.gebieterid === gebotDTO.gebieterid) && (gebot.angebotid === gebotDTO.angebotid)) })
+        console.log("find() für Gebot: " + gebot?.gebotid)
         if (gebot !== undefined) {
             gebot.betrag = gebotDTO.betrag
             gebot.gebotzeitpunkt = gebotDTO.gebotzeitpunkt
-        }else {
+            console.log("Gebot-Update: id - " + gebot.gebotid)
+        } else {
             gebotState.gebotliste.unshift(gebotDTO)
+            console.log("neues Gebot: id - " + gebotState.gebotliste[0].gebotid)
         }
 
         /*
@@ -87,9 +90,9 @@ export function useGebot(angebotid: number) {
          * bei einem Kommunikationsfehler auf false 
          * und die zugehörige Fehlermeldung wird in 'errormessage' des Stateobjekts geschrieben
          */
-        const stompclient = new Client({brokerURL: wsurl})
+        const stompclient = new Client({ brokerURL: wsurl })
         stompclient.onWebSocketError = (event) => {
-            /* WS-Error */ 
+            /* WS-Error */
             console.log("error on WebSocket")
             // gebotState.errormessage = event.body
         }
@@ -104,19 +107,28 @@ export function useGebot(angebotid: number) {
             gebotState.receivingMessages = true
             stompclient.subscribe(DEST, (message) => {
                 if (message.body) {
-                    let jsonobj:IGetGebotResponseDTO = JSON.parse(message.body)
-                    console.log("gebot-obj: "+jsonobj)
-                    console.log("message: "+message.body)
+                    let jsonobj: IGetGebotResponseDTO = JSON.parse(message.body)
+                    console.log("message: " + message.body)
+                    console.log("gebot-obj: " + jsonobj.angebotbeschreibung)
                     processGebotDTO(jsonobj)
                 }
             })
         }
 
-        stompclient.onDisconnect = () => { /* Verbindung abgebaut */ console.log("Verbindung abgebaut")}
+        stompclient.onDisconnect = () => { /* Verbindung abgebaut */ console.log("Verbindung abgebaut") }
 
         //Verbindung zum Broker aufbauen
         stompclient.activate()
 
+        try {
+            stompclient.publish({
+                destination: DEST, headers: {},
+                body: "stompclient body"// JSON.stringify(datenobjekt)
+                // ... oder body: "irgendein String"
+            });
+        } catch (fehler) {
+            // Problem beim Senden
+        }
     }
 
 
@@ -135,6 +147,7 @@ export function useGebot(angebotid: number) {
          * Bei Fehler wird im State-Objekt die 'gebotliste' auf das leere Array 
          * und 'errormessage' auf die Fehlermeldung geschrieben.
          */
+        console.log("im updateGebote()")
         try {
             const url = `/api/gebot`
             const response = await fetch(url, {
@@ -147,12 +160,13 @@ export function useGebot(angebotid: number) {
                 gebotListe = gebotListe.filter(gebot => gebot.angebotid === angebotid)
                 receiveGebotMessages()
                 let topbetrag = Math.max(...gebotListe.map(gebot => gebot.betrag))
-                let topgebot = gebotListe.find((o) => {return o.betrag == topbetrag})
+                let topgebot = gebotListe.find((o) => { return o.betrag == topbetrag })
                 if (topgebot != undefined) {
                     gebotState.topgebot = topbetrag
                     gebotState.topbieter = topgebot.gebietername
                 }
                 gebotState.errormessage = ''
+                gebotState.gebotliste = gebotListe
             } else {
                 gebotState.gebotliste = []
                 gebotState.errormessage = response.statusText
@@ -178,17 +192,23 @@ export function useGebot(angebotid: number) {
          * Falls ok, wird 'errormessage' im State auf leer gesetzt,
          * bei Fehler auf die Fehlermeldung
          */
+        console.log("im sendeGebot()")
         try {
             const url = `/api/gebot`
-            let neuesGebot:IAddGebotRequestDTO = {benutzerprofilid: logindata.benutzerprofilid, angebotid: angebotid, betrag:betrag} 
-            const response = await fetch(url, {
-                method: 'POST', 
+            let neuesGebot: IAddGebotRequestDTO = { benutzerprofilid: logindata.benutzerprofilid, angebotid: angebotid, betrag: betrag }
+            await fetch(url, {
+                method: 'POST',
                 headers: {
+                    'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + logindata.jwtToken
                 },
-                body: JSON.stringify(neuesGebot)})
-            console.log("ID response bei sendeGebot(): " + response.text())
-            gebotState.errormessage = ''
+                body: JSON.stringify(neuesGebot)
+            })
+                .then(async (response) => {
+                    console.log("ID response bei sendeGebot(): " + response.text())
+                    gebotState.errormessage = ''
+                    //await updateGebote()
+                })
         } catch (fehler) {
             gebotState.errormessage = `Fehler: ${fehler}`
         }
