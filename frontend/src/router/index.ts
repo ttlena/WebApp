@@ -28,7 +28,7 @@ const router = createRouter({
     },
     {
       path: '/login',
-      name: 'Login',
+      name: 'Login/Logout',
       component: LoginView
     }
   ]
@@ -36,7 +36,7 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
   if (useLogin().logindata.loggedin == false && to.path !== '/login'){
-    return { name: 'Login'}
+    return { name: 'Login/Logout'}
   }
 })
 

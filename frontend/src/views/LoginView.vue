@@ -16,15 +16,15 @@ const router = useRouter()
 async function doLogin(): Promise<void> {
     await login(username.value, password.value)
 
-    
+
     if (logindata.errormessage == '') {
-        router.push("http://localhost:3000/").then(()=>{
-        console.log("router pushed")
-    }).catch((err)=> {
-        console.log("fehler ",err)
-    })
+        router.push("http://localhost:3000/").then(() => {
+            console.log("router pushed")
+        }).catch((err) => {
+            console.log("fehler ", err)
+        })
     }
-    console.log('errormessage: '+logindata.errormessage)
+    console.log('errormessage: ' + logindata.errormessage)
 
 }
 </script>

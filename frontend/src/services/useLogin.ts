@@ -76,6 +76,7 @@ async function login(username: string, password: string) {
         loginState.jwtToken = jsondata.jwtToken
         loginState.loggedin = true
         loginState.errormessage = ''
+        console.log("eingeloggt")
     })
     .catch( fehler => {
         logout()
@@ -92,6 +93,7 @@ function logout() {
     loginState.benutzerprofilid = 0
     loginState.name = ""
     loginState.username = ""
+    console.log("ausgeloggt)")
 }
 
 
