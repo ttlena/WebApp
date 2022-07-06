@@ -4,7 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import de.hsrm.mi.web.projekt.angebot.Angebot;
@@ -16,7 +21,8 @@ import de.hsrm.mi.web.projekt.messaging.BackendOperation;
 
 @Service
 public class GebotServiceImpl implements GebotService{
-
+    Logger logger = LoggerFactory.getLogger(GebotServiceImpl.class);
+    
     @Autowired
     private GebotRepository gebotRepository;
     
@@ -25,6 +31,9 @@ public class GebotServiceImpl implements GebotService{
 
     @Autowired
     private BackendInfoService backendInfoService;
+
+    @Autowired
+    private SimpMessagingTemplate messaging;
 
     @Override
     public List<Gebot> findeAlleGebote() {
@@ -37,10 +46,12 @@ public class GebotServiceImpl implements GebotService{
         return angebot.getGebote();
     }
 
+    @Transactional
     @Override
     public Gebot bieteFuerAngebot(long benutzerprofilid, long angebotid, long betrag) {
         Optional<Gebot> gebot = gebotRepository.findByAngebotIdAndBieterId(angebotid, benutzerprofilid); 
         if(gebot.isEmpty()){
+            logger.info("neuer Bieter fuer dieses Angebot");
             Gebot neuesGebot = new Gebot();
             neuesGebot.setAngebot(benutzerprofilService.findeAngebotMitId(angebotid).orElseThrow());
             neuesGebot.setGebieter(benutzerprofilService.holeBenutzerProfilMitId(benutzerprofilid).orElseThrow());
@@ -51,13 +62,16 @@ public class GebotServiceImpl implements GebotService{
             gebotRepository.save(neuesGebot);
             //Gebot-DTO senden?
             GetGebotResponseDTO gebotDTO = GetGebotResponseDTO.from(neuesGebot);
-            backendInfoService.sendInfo(String.format("/gebot/%d",gebotDTO.angebotid()), BackendOperation.CREATE, gebotDTO.gebotid());
+            messaging.convertAndSend("/topic/gebot/"+neuesGebot.getAngebot().getId(), gebotDTO);
+            //backendInfoService.sendInfo(String.format("/gebot/%d",gebotDTO.angebotid()), BackendOperation.CREATE, gebotDTO.angebotid());
             return neuesGebot;
         }else{
+            logger.info("Gebot update");
             gebot.get().setBetrag(betrag);
             gebot.get().setGebotzeitpunkt(LocalDateTime.now());
             GetGebotResponseDTO gebotDTO = GetGebotResponseDTO.from(gebot.get());
-            backendInfoService.sendInfo(String.format("/gebot/%d",gebotDTO.angebotid()), BackendOperation.UPDATE, gebotDTO.gebotid());
+            messaging.convertAndSend("/topic/gebot/"+gebot.get().getAngebot().getId(), gebotDTO);
+            //backendInfoService.sendInfo(String.format("/gebot/%d",gebotDTO.angebotid()), BackendOperation.UPDATE, gebotDTO.angebotid());
             return gebot.get();
         }
     }

@@ -38,7 +38,7 @@ public class ProjektUserController {
         if(result.hasErrors()) {
             return "projektuser/registrieren";
         }else {
-            m.addAttribute("user", service.neuenBenutzerAnlegen(user.getUsername(), user.getPassword(), user.getRole()));
+            m.addAttribute("projektuser", service.neuenBenutzerAnlegen(user.getUsername(), user.getPassword(), user.getRole()));
         }
         return "redirect:/login";
     }

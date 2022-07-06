@@ -19,7 +19,7 @@ function details() {
     <table>
         <thead>
             <th style="width:25%; text-align: left;">
-                <RouterLink to="`/gebot/${props.angebot.angebotid}`">{{props.angebot.beschreibung}}</RouterLink>
+                <RouterLink :to="'/gebot/'+props.angebot.angebotid">{{props.angebot.beschreibung}}</RouterLink>
             </th>
             <th style="width:45%; text-align: right;">{{props.angebot.gebote}} Gebote</th>
             <th style="width:30%; text-align: center;"> {{props.angebot.topgebot}} EUR </th>

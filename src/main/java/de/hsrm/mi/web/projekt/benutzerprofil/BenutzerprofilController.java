@@ -46,6 +46,7 @@ public class BenutzerprofilController {
     public void initProfil(Model m, Principal principal){
         BenutzerProfil benutzerProfil = new BenutzerProfil();
         if(principal != null) {
+            logger.info("Principal: " + principal.toString());
             benutzerProfil = projektUserService.findeBenutzer(principal.getName()).getBenutzerProfil();
             if(benutzerProfil == null)
                 benutzerProfil = new BenutzerProfil();
@@ -76,7 +77,6 @@ public class BenutzerprofilController {
 
     @GetMapping("benutzerprofil/bearbeiten")
     public String getProfileditor(
-        
                 @ModelAttribute("profil") BenutzerProfil profil, 
                 Model m, 
                 Locale locale){
